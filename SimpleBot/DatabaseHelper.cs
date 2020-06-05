@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace SimpleBot
 {
@@ -62,6 +63,31 @@ namespace SimpleBot
 
             return image;
 
+        }
+
+        public List<Bitmap> GetTargetImagesFromDatabase(string game, string cycle)
+        {
+            List<byte[]> dataList = new List<byte[]>();
+            List<Bitmap> bitmapList = new List<Bitmap>();
+
+            //Get all target images with the given game name and cycle
+            List<TargetImage> targetImages =_context.TargetImages.Where(o => (o.Game == game) && (o.Cycle) == cycle ).ToList();
+
+            //Put data of all found images in array
+            foreach(TargetImage image in targetImages)
+            {
+                dataList.Add(image.Data);
+            }
+
+            //Convert all data to bitmap images
+            foreach(byte[] data in dataList)
+            {
+                Bitmap image = (Bitmap)Image.FromStream(new System.IO.MemoryStream(data));
+
+                bitmapList.Add(image);
+            }
+
+            return bitmapList;
         }
     }
 }

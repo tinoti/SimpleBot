@@ -26,6 +26,11 @@ namespace SimpleBot
         {
             //InitializeComponent();
             string windowTitle = "BlueStacks";
+            string gameName = "American Dad";
+            string cycle = "DailyAds";
+            int waitTimeBetweenClicks = 2000;
+            int waitTimeForAds = 40000;
+
             var databaseHelpers = new DatabaseHelper();
             //databaseHelpers.WriteTargetImageToDatabase("C:\\Users\\Tino\\Desktop\\SimpleBot1\\DailyAds\\1.bmp", "American Dad", "DailyAds","1");
             //databaseHelpers.WriteTargetImageToDatabase("C:\\Users\\Tino\\Desktop\\SimpleBot1\\DailyAds\\2.bmp", "American Dad", "DailyAds", "2");
@@ -35,17 +40,9 @@ namespace SimpleBot
             //databaseHelpers.WriteTargetImageToDatabase("C:\\Users\\Tino\\Desktop\\SimpleBot1\\DailyAds\\6.bmp", "American Dad", "DailyAds", "6");
 
 
-            Bitmap image = databaseHelpers.GetTargetImageFromDatabase("American Dad", "DailyAds", "1");
-            Bitmap image2 = databaseHelpers.GetTargetImageFromDatabase("American Dad", "DailyAds", "2");
-            Bitmap image3 = databaseHelpers.GetTargetImageFromDatabase("American Dad", "DailyAds", "3");
-            Bitmap image4 = databaseHelpers.GetTargetImageFromDatabase("American Dad", "DailyAds", "4");
 
-            List<Bitmap> images = new List<Bitmap>();
-            images.Add(image);
-            images.Add(image2);
-            images.Add(image3);
-            images.Add(image4);
-
+            List<Bitmap> images = databaseHelpers.GetTargetImagesFromDatabase(gameName, cycle);
+           
             ImageSearch.Cycle(windowTitle, images);
 
 

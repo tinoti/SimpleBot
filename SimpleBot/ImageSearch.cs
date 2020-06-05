@@ -31,7 +31,7 @@ namespace SimpleBot
         //Takes screenshot of the window and saves it to .bmp, returns path to saved image
         static public string CaptureWindow(IntPtr handle)
         {
-            string path = "C:\\Users\\Tino\\Desktop\\SimpleBot\\";
+            string path = System.IO.Path.GetTempPath();
 
             // Get the size of the window to capture
             Rectangle rect = new Rectangle();
@@ -65,7 +65,7 @@ namespace SimpleBot
 
 
         //Searches for the location of given image (imgTargetPath) in the screenshot
-        public static Point Search(string imgSourcePath, string imgTargetPath, double accuracy = 0.9, bool isTest = false)
+        public static Point Search(string imgSourcePath, Bitmap targetImage, double accuracy = 0.9, bool isTest = false)
         {
 
             //Point point = new Point();
@@ -74,8 +74,7 @@ namespace SimpleBot
             //string imgSearch = imgTargetPath;
 
             Image<Bgr, byte> source = new Image<Bgr, byte>(imgSourcePath);
-            Image<Bgr, byte> template = new Image<Bgr, byte>(imgTargetPath);
-            //Image<Bgr, byte> imageToShow = source.Copy();
+            Image<Bgr, byte> template = new Image<Bgr, byte>(targetImage);
 
             using (Image<Gray, float> result = source.MatchTemplate(template, Emgu.CV.CvEnum.TemplateMatchingType.CcoeffNormed))
             {
@@ -101,13 +100,13 @@ namespace SimpleBot
 
 
         //Combines the functions for searching, so takes a screenshot, searches that screenshot for image location, and clicks on it
-        public static void Step(string windowTitle, string imgTargetPath)
+        public static void Step(string windowTitle, Bitmap targetImage)
         {
             IntPtr handle = FindWindow(null, windowTitle);
 
             string imgSourcePath = CaptureWindow(handle);
 
-            Point imgTargetLocation = Search(imgSourcePath, imgTargetPath);
+            Point imgTargetLocation = Search(imgSourcePath, targetImage);
 
             Thread.Sleep(2000);
             AutoItX.ControlClick(windowTitle, "", "", "left", 1, imgTargetLocation.X, imgTargetLocation.Y);
@@ -115,12 +114,12 @@ namespace SimpleBot
 
 
         //Takes in an array of images to find, and performs Step on each of them
-        public static void Cycle(string windowTitle, List<string> imgTargetPaths)
+        public static void Cycle(string windowTitle, List<Bitmap> targetImages)
         {
-            foreach (string imgTargetPath in imgTargetPaths)
+            foreach (Bitmap targetImage in targetImages)
             {
                 Thread.Sleep(2000);
-                Step(windowTitle, imgTargetPath);
+                Step(windowTitle, targetImage);
             }
         }
 

@@ -21,30 +21,34 @@ namespace SimpleBot
     /// </summary>
     public partial class MainWindow : Window
     {
-        ApplicationDbContext _context;
 
         public MainWindow()
         {
             //InitializeComponent();
-            byte[] data;
+            string windowTitle = "BlueStacks";
+            var databaseHelpers = new DatabaseHelper();
+            //databaseHelpers.WriteTargetImageToDatabase("C:\\Users\\Tino\\Desktop\\SimpleBot1\\DailyAds\\1.bmp", "American Dad", "DailyAds","1");
+            //databaseHelpers.WriteTargetImageToDatabase("C:\\Users\\Tino\\Desktop\\SimpleBot1\\DailyAds\\2.bmp", "American Dad", "DailyAds", "2");
+            //databaseHelpers.WriteTargetImageToDatabase("C:\\Users\\Tino\\Desktop\\SimpleBot1\\DailyAds\\3.bmp", "American Dad", "DailyAds", "3");
+            //databaseHelpers.WriteTargetImageToDatabase("C:\\Users\\Tino\\Desktop\\SimpleBot1\\DailyAds\\4.bmp", "American Dad", "DailyAds", "4");
+            //databaseHelpers.WriteTargetImageToDatabase("C:\\Users\\Tino\\Desktop\\SimpleBot1\\DailyAds\\5.bmp", "American Dad", "DailyAds", "5", true);
+            //databaseHelpers.WriteTargetImageToDatabase("C:\\Users\\Tino\\Desktop\\SimpleBot1\\DailyAds\\6.bmp", "American Dad", "DailyAds", "6");
 
-            _context = new ApplicationDbContext();
 
-            using (System.IO.MemoryStream stream = new System.IO.MemoryStream())
-            {
-                var image = Image.FromFile("C:\\Users\\Tino\\Desktop\\SimpleBot1\\test.bmp");
-                
-                image.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
-                data = stream.ToArray();
+            Bitmap image = databaseHelpers.GetTargetImageFromDatabase("American Dad", "DailyAds", "1");
+            Bitmap image2 = databaseHelpers.GetTargetImageFromDatabase("American Dad", "DailyAds", "2");
+            Bitmap image3 = databaseHelpers.GetTargetImageFromDatabase("American Dad", "DailyAds", "3");
+            Bitmap image4 = databaseHelpers.GetTargetImageFromDatabase("American Dad", "DailyAds", "4");
 
-                byte[] data2 = _context.TargetImages.Single(o => o.Name == "test").Data;
+            List<Bitmap> images = new List<Bitmap>();
+            images.Add(image);
+            images.Add(image2);
+            images.Add(image3);
+            images.Add(image4);
 
-                Image image2 = Image.FromStream(new System.IO.MemoryStream(data2));
-                image2.Save("C:\\Users\\Tino\\Desktop\\SimpleBot1\\test2.bmp");
-                
-                //_context.TargetImages.Add(image3);
-                //_context.SaveChanges();
-            }
+            ImageSearch.Cycle(windowTitle, images);
+
+
         }
     }
 }

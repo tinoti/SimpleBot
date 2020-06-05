@@ -1,4 +1,5 @@
-﻿using SimpleBot.Model;
+﻿using SimpleBot.Dto;
+using SimpleBot.Model;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -65,10 +66,11 @@ namespace SimpleBot
 
         }
 
-        public List<Bitmap> GetTargetImagesFromDatabase(string game, string cycle)
+        public List<TargetImageDto> GetTargetImagesFromDatabase(string game, string cycle)
         {
-            List<byte[]> dataList = new List<byte[]>();
-            List<Bitmap> bitmapList = new List<Bitmap>();
+
+
+            List<TargetImageDto> targetImageDtos = new List<TargetImageDto>();
 
             //Get all target images with the given game name and cycle
             List<TargetImage> targetImages =_context.TargetImages.Where(o => (o.Game == game) && (o.Cycle) == cycle ).ToList();
@@ -76,18 +78,21 @@ namespace SimpleBot
             //Put data of all found images in array
             foreach(TargetImage image in targetImages)
             {
-                dataList.Add(image.Data);
+                byte[] data = image.Data;
+                Bitmap bitmapImage = (Bitmap)Image.FromStream(new System.IO.MemoryStream(data));
+
+                TargetImageDto targetImageDto = new TargetImageDto
+                {
+                    Image = bitmapImage,
+                    IsAd = image.IsAd
+                };
+
+                targetImageDtos.Add(targetImageDto);
             }
 
-            //Convert all data to bitmap images
-            foreach(byte[] data in dataList)
-            {
-                Bitmap image = (Bitmap)Image.FromStream(new System.IO.MemoryStream(data));
+            
 
-                bitmapList.Add(image);
-            }
-
-            return bitmapList;
+            return targetImageDtos;
         }
     }
 }

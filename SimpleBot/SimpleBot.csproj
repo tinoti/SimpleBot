@@ -98,6 +98,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DatabaseHelper.cs" />
+    <Compile Include="Dto\TargetImageDto.cs" />
     <Compile Include="ImageSearch.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

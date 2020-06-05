@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Status;
 using AutoIt;
 using System.Threading;
+using SimpleBot.Dto;
 
 namespace SimpleBot
 {
@@ -68,11 +69,6 @@ namespace SimpleBot
         public static Point Search(string imgSourcePath, Bitmap targetImage, double accuracy = 0.9, bool isTest = false)
         {
 
-            //Point point = new Point();
-            //IntPtr hwnd = FindWindow(null, windowTitle);
-            // string imgSource = CaptureWindow(hwnd);
-            //string imgSearch = imgTargetPath;
-
             Image<Bgr, byte> source = new Image<Bgr, byte>(imgSourcePath);
             Image<Bgr, byte> template = new Image<Bgr, byte>(targetImage);
 
@@ -100,26 +96,36 @@ namespace SimpleBot
 
 
         //Combines the functions for searching, so takes a screenshot, searches that screenshot for image location, and clicks on it
-        public static void Step(string windowTitle, Bitmap targetImage)
+        public static void Step(string windowTitle, TargetImageDto targetImage, int waitTimeBetweenClicks, int waitTimeForAds = 40000)
         {
+
+            //Wait
+            if (targetImage.IsAd)
+                Thread.Sleep(waitTimeForAds);
+            else
+                Thread.Sleep(waitTimeBetweenClicks);
+
+            //Get the pointer to the window
             IntPtr handle = FindWindow(null, windowTitle);
 
+            //Capture screenshot of window and return path to it
             string imgSourcePath = CaptureWindow(handle);
 
-            Point imgTargetLocation = Search(imgSourcePath, targetImage);
+            //Get coordinates of the image
+            Point imgTargetLocation = Search(imgSourcePath, targetImage.Image);
 
-            Thread.Sleep(2000);
+           
+            //Click on coordinates
             AutoItX.ControlClick(windowTitle, "", "", "left", 1, imgTargetLocation.X, imgTargetLocation.Y);
         }
 
 
         //Takes in an array of images to find, and performs Step on each of them
-        public static void Cycle(string windowTitle, List<Bitmap> targetImages)
+        public static void Cycle(string windowTitle, List<TargetImageDto> targetImages, int waitTimeBetweenClicks, int waitTimeForAds = 40000)
         {
-            foreach (Bitmap targetImage in targetImages)
+            foreach (TargetImageDto targetImage in targetImages)
             {
-                Thread.Sleep(2000);
-                Step(windowTitle, targetImage);
+                Step(windowTitle, targetImage, waitTimeBetweenClicks, waitTimeForAds);
             }
         }
 

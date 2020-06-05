@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Drawing;
 using SimpleBot.Model;
+using SimpleBot.Dto;
 
 namespace SimpleBot
 {
@@ -28,7 +29,7 @@ namespace SimpleBot
             string windowTitle = "BlueStacks";
             string gameName = "American Dad";
             string cycle = "DailyAds";
-            int waitTimeBetweenClicks = 2000;
+            int waitTimeBetweenClicks = 5000;
             int waitTimeForAds = 40000;
 
             var databaseHelpers = new DatabaseHelper();
@@ -41,9 +42,9 @@ namespace SimpleBot
 
 
 
-            List<Bitmap> images = databaseHelpers.GetTargetImagesFromDatabase(gameName, cycle);
+            List<TargetImageDto> images = databaseHelpers.GetTargetImagesFromDatabase(gameName, cycle);
            
-            ImageSearch.Cycle(windowTitle, images);
+            ImageSearch.Cycle(windowTitle, images, waitTimeBetweenClicks, waitTimeForAds);
 
 
         }

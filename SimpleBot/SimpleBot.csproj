@@ -97,6 +97,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DatabaseHelper.cs" />
     <Compile Include="ImageSearch.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -112,9 +113,13 @@
     <Compile Include="Migrations\202006051145209_UpdateImageModel.designer.cs">
       <DependentUpon>202006051145209_UpdateImageModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202006051629068_ChangeImageToTargetImage.cs" />
+    <Compile Include="Migrations\202006051629068_ChangeImageToTargetImage.designer.cs">
+      <DependentUpon>202006051629068_ChangeImageToTargetImage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ApplicationDbContext.cs" />
-    <Compile Include="Model\Image.cs" />
+    <Compile Include="Model\TargetImage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -133,6 +138,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202006051145209_UpdateImageModel.resx">
       <DependentUpon>202006051145209_UpdateImageModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006051629068_ChangeImageToTargetImage.resx">
+      <DependentUpon>202006051629068_ChangeImageToTargetImage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SimpleBot.Model
 {
-    class Image
+    class TargetImage
     {
         public int Id { get; set; }
 

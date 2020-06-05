@@ -9,6 +9,6 @@ namespace SimpleBot.Model
 {
     class ApplicationDbContext : DbContext
     {
-        public DbSet<Image> Images { get; set; }
+        public DbSet<TargetImage> TargetImages { get; set; }
     }
 }

@@ -65,30 +65,27 @@ namespace SimpleBot
         }
 
 
-        //Searches for the location of given image (imgTargetPath) in the screenshot
-        public static Point Search(string imgSourcePath, Bitmap targetImage, double accuracy = 0.9, bool isTest = false)
+        //Searches for the location of given images (targetImages) in the screenshot
+        public static Point Search(string imgSourcePath, List<Bitmap> targetImages, double accuracy = 0.9, bool isTest = false)
         {
 
             Image<Bgr, byte> source = new Image<Bgr, byte>(imgSourcePath);
-            Image<Bgr, byte> template = new Image<Bgr, byte>(targetImage);
+            double[] minValues, maxValues;
+            Point[] minLocations, maxLocations;
 
-            using (Image<Gray, float> result = source.MatchTemplate(template, Emgu.CV.CvEnum.TemplateMatchingType.CcoeffNormed))
+            foreach (Bitmap image in targetImages)
             {
-                double[] minValues, maxValues;
-                Point[] minLocations, maxLocations;
-                result.MinMax(out minValues, out maxValues, out minLocations, out maxLocations);
-
-                if (maxValues[0] > accuracy)
+                Image<Bgr, byte> template = new Image<Bgr, byte>(image);
+                using (Image<Gray, float> result = source.MatchTemplate(template, Emgu.CV.CvEnum.TemplateMatchingType.CcoeffNormed))
                 {
-                    //result.X = minLocations[0].X+template.Size.
-
-                    return maxLocations[0];
-                }
-                else
-                {
-                    throw new ApplicationException("Not found!");
+                    
+                    result.MinMax(out minValues, out maxValues, out minLocations, out maxLocations);
+                    if (maxValues[0] > accuracy)
+                        return maxLocations[0];
                 }
             }
+
+            throw new ApplicationException("Not found!");        
 
         }
 
@@ -112,7 +109,7 @@ namespace SimpleBot
             string imgSourcePath = CaptureWindow(handle);
 
             //Get coordinates of the image
-            Point imgTargetLocation = Search(imgSourcePath, targetImage.Image);
+            Point imgTargetLocation = Search(imgSourcePath, targetImage.Images);
 
            
             //Click on coordinates

@@ -9,7 +9,10 @@ namespace SimpleBot.Dto
 {
     class TargetImageDto
     {
-        public Bitmap Image { get; set; }
+
+        public string Name { get; set; }
+
+        public List<Bitmap> Images { get; set; }
 
         public bool IsAd { get; set; }
     }

@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using System.Drawing;
 using SimpleBot.Model;
 using SimpleBot.Dto;
+using IronOcr;
 
 namespace SimpleBot
 {
@@ -47,29 +48,29 @@ namespace SimpleBot
             //databaseHelpers.WriteTargetImageToDatabase("c:\\users\\tino\\desktop\\simplebot1\\dailyads\\6.bmp", "american dad", "dailyads", "6");
             //databaseHelpers.WriteTargetImageToDatabase("c:\\users\\tino\\desktop\\simplebot1\\dailyads\\7.bmp", "american dad", "dailyads", "7");
 
+            string targetPath = "C:\\Users\\Tino\\Desktop\\TargetImages\\American Dad\\DailyAds";
+
+            databaseHelpers.WriteTargetImagesToDatabase(targetPath, gameName, cycle);
+
+            //List<TargetImageDto> images = databaseHelpers.GetTargetImagesFromDatabase(gameName, cycle);
+
+            //TargetImageDto.SetNextNode(images, "HeadNode", "1");
+            //TargetImageDto.SetNextNode(images, "1", "2");
+            //TargetImageDto.SetNextNode(images, "2", "3.0");
+            //TargetImageDto.SetNextNode(images, "2", "3.1");
+            //TargetImageDto.SetNextNode(images, "2", "3.2");
+            //TargetImageDto.SetNextNode(images, "3.0", "4");
+            //TargetImageDto.SetNextNode(images, "3.1", "4");
+            //TargetImageDto.SetNextNode(images, "3.2", "6");
+            //TargetImageDto.SetNextNode(images, "4", "5.0");
+            //TargetImageDto.SetNextNode(images, "4", "5.1");
+            //TargetImageDto.SetNextNode(images, "5.0", "6");
+            //TargetImageDto.SetNextNode(images, "5.1", "6");
+            //TargetImageDto.SetNextNode(images, "6", "7");
+            //TargetImageDto.SetNextNode(images, "7", "1");
 
 
-
-
-            List<TargetImageDto> images = databaseHelpers.GetTargetImagesFromDatabase(gameName, cycle);
-
-            TargetImageDto.SetNextNode(images, "HeadNode", "1");
-            TargetImageDto.SetNextNode(images, "1", "2");
-            TargetImageDto.SetNextNode(images, "2", "3.0");
-            TargetImageDto.SetNextNode(images, "2", "3.1");
-            TargetImageDto.SetNextNode(images, "2", "3.2");
-            TargetImageDto.SetNextNode(images, "3.0", "4");
-            TargetImageDto.SetNextNode(images, "3.1", "4");
-            TargetImageDto.SetNextNode(images, "3.2", "6");
-            TargetImageDto.SetNextNode(images, "4", "5.0");
-            TargetImageDto.SetNextNode(images, "4", "5.1");
-            TargetImageDto.SetNextNode(images, "5.0", "6");
-            TargetImageDto.SetNextNode(images, "5.1", "6");
-            TargetImageDto.SetNextNode(images, "6", "7");
-            TargetImageDto.SetNextNode(images, "7", "1");
-
-
-            ImageSearch.Cycle(windowTitle, images, waitTimeBetweenClicks, waitTimeForAds);
+            //ImageSearch.Cycle(windowTitle, images, waitTimeBetweenClicks, waitTimeForAds);
 
 
         }

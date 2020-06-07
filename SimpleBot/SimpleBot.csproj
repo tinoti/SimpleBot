@@ -57,6 +57,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="IronOcr, Version=4.4.0.21181, Culture=neutral, PublicKeyToken=5f366048dc436899, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronOcr.4.4.0\lib\net40\IronOcr.dll</HintPath>
+    </Reference>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.1.1.2225.0\lib\net20\OpenTK.dll</HintPath>
     </Reference>
@@ -118,6 +121,10 @@
     <Compile Include="Migrations\202006051629068_ChangeImageToTargetImage.designer.cs">
       <DependentUpon>202006051629068_ChangeImageToTargetImage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202006071828043_AddNextNodeToTargetImage.cs" />
+    <Compile Include="Migrations\202006071828043_AddNextNodeToTargetImage.designer.cs">
+      <DependentUpon>202006071828043_AddNextNodeToTargetImage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ApplicationDbContext.cs" />
     <Compile Include="Model\TargetImage.cs" />
@@ -142,6 +149,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202006051629068_ChangeImageToTargetImage.resx">
       <DependentUpon>202006051629068_ChangeImageToTargetImage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006071828043_AddNextNodeToTargetImage.resx">
+      <DependentUpon>202006071828043_AddNextNodeToTargetImage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

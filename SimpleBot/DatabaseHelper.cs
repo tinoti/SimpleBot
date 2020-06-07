@@ -3,6 +3,7 @@ using SimpleBot.Model;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +22,35 @@ namespace SimpleBot
         }
 
         
-        public void WriteTargetImageToDatabase(string imgTargetPath, string game, string cycle, string name, bool isAd = false)
+        //Write all images from a directory to database, images must be named by a specific convention (image number followed by a list of next nodes in brackets, divided by
+        // ',' if there are more nodes, after the brackets [] true if image is before an ad)
+        public void WriteTargetImagesToDatabase(string targetImagesPath, string game, string cycle)
+        {
+            //Get full paths of all images in a directory
+            string[] fullPaths = Directory.GetFiles(targetImagesPath);
+
+            //Loop through each path
+            foreach(string targetImagePath in fullPaths)
+            {
+                bool isAd = false;
+                              
+                string[] targetImageName = targetImagePath.Split('\\').Last().Split('[');
+
+                //Get the content that is in the brackets [] of image name
+                string nextNodes = targetImageName[1].Split(']')[0];
+
+                if (targetImageName[1].Contains("true"))
+                    isAd = true;
+
+                //Write image to database
+                WriteTargetImageToDatabase(targetImagePath, game, cycle, targetImageName[0], nextNodes, isAd);
+
+            };
+           
+        }
+
+
+        public void WriteTargetImageToDatabase(string imgTargetPath, string game, string cycle, string name, string nextNodes, bool isAd = false)
         {
 
             //Open new stream
@@ -43,7 +72,8 @@ namespace SimpleBot
                     Game = game,
                     Cycle = cycle,
                     Name = name,
-                    IsAd = isAd
+                    IsAd = isAd,
+                    NextNode = nextNodes
                     
                 };
 

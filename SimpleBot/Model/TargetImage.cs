@@ -25,6 +25,7 @@ namespace SimpleBot.Model
 
         public string Cycle { get; set; }
 
+        public string NextNode { get; set; }
 
     }
 }

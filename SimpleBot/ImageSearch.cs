@@ -65,36 +65,44 @@ namespace SimpleBot
         }
 
 
-        //Searches for the location of given images (targetImages) in the screenshot
-        public static Point Search(string imgSourcePath, List<Bitmap> targetImages, double accuracy = 0.9, bool isTest = false)
+        //Searches for the location of given image in the screenshot, returns true if location is found and passes the location by reference
+        public static bool Search(string imgSourcePath, Bitmap targetImage, ref Point location, double accuracy = 0.9, bool isTest = false)
         {
-
+            //Screenshot image
             Image<Bgr, byte> source = new Image<Bgr, byte>(imgSourcePath);
+
             double[] minValues, maxValues;
             Point[] minLocations, maxLocations;
 
-            foreach (Bitmap image in targetImages)
+            //Image which location needs to be found
+            Image<Bgr, byte> template = new Image<Bgr, byte>(targetImage);
+
+            using (Image<Gray, float> result = source.MatchTemplate(template, Emgu.CV.CvEnum.TemplateMatchingType.CcoeffNormed))
             {
-                Image<Bgr, byte> template = new Image<Bgr, byte>(image);
-                using (Image<Gray, float> result = source.MatchTemplate(template, Emgu.CV.CvEnum.TemplateMatchingType.CcoeffNormed))
+
+                result.MinMax(out minValues, out maxValues, out minLocations, out maxLocations);
+
+                //maxValues represent the accuracy of the found image, 1 being the most accurate and 0 least accurate
+                if (maxValues[0] > accuracy)
                 {
-                    
-                    result.MinMax(out minValues, out maxValues, out minLocations, out maxLocations);
-                    if (maxValues[0] > accuracy)
-                        return maxLocations[0];
+                    //Pass the location by reference and return true
+                    location = maxLocations[0];                    
+                    return true;
                 }
+                    
             }
 
-            throw new ApplicationException("Not found!");        
+            return false;      
 
         }
 
 
 
 
-        //Combines the functions for searching, so takes a screenshot, searches that screenshot for image location, and clicks on it
-        public static void Step(string windowTitle, TargetImageDto targetImage, int waitTimeBetweenClicks, int waitTimeForAds = 40000)
+        //Combines the functions Takes a screenshot, searches that screenshot for image location, and clicks on it
+        public static TargetImageDto Step(string windowTitle, TargetImageDto targetImage, int waitTimeBetweenClicks, int waitTimeForAds = 40000)
         {
+            Point location = new Point();
 
             //Wait
             if (targetImage.IsAd)
@@ -108,23 +116,41 @@ namespace SimpleBot
             //Capture screenshot of window and return path to it
             string imgSourcePath = CaptureWindow(handle);
 
-            //Get coordinates of the image
-            Point imgTargetLocation = Search(imgSourcePath, targetImage.Images);
 
-           
-            //Click on coordinates
-            AutoItX.ControlClick(windowTitle, "", "", "left", 1, imgTargetLocation.X, imgTargetLocation.Y);
+            foreach(TargetImageDto nextNode in targetImage.Next)
+            {
+                if(Search(imgSourcePath, nextNode.Image, ref location))
+                {
+                    AutoItX.ControlClick(windowTitle, "", "", "left", 1, location.X, location.Y);
+                    return nextNode;
+                }
+            }
+
+            //Every scenario should be covered in the searchin logic, if it gets to here means something went wrong
+            throw new ApplicationException("Not found!");
         }
 
 
-        //Takes in an array of images to find, and performs Step on each of them
+        //Goes through list of target images and their nodes
         public static void Cycle(string windowTitle, List<TargetImageDto> targetImages, int waitTimeBetweenClicks, int waitTimeForAds = 40000)
         {
-            foreach (TargetImageDto targetImage in targetImages)
+            //Set currentImage to HeadNode of the cycle
+            TargetImageDto currentImage = targetImages[0];
+
+            while (true)
             {
-                Step(windowTitle, targetImage, waitTimeBetweenClicks, waitTimeForAds);
+                if (currentImage.Next == null)
+                    break;
+
+                //Step returns the next image it should look for
+                currentImage = Step(windowTitle, currentImage, waitTimeBetweenClicks);
+
+
             }
         }
+
+
+        
 
     }
 }

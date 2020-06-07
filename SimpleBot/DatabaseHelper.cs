@@ -69,7 +69,6 @@ namespace SimpleBot
         public List<TargetImageDto> GetTargetImagesFromDatabase(string game, string cycle)
         {
 
-            int counter = 0;
             List<TargetImageDto> targetImageDtos = new List<TargetImageDto>();
 
             //Get all target images objects with the given game name and cycle from the database
@@ -81,20 +80,16 @@ namespace SimpleBot
                 byte[] data = image.Data;
                 Bitmap bitmapImage = (Bitmap)Image.FromStream(new System.IO.MemoryStream(data));
 
-                if(counter == 0 || !(targetImageDtos[counter - 1].Name == image.Name))
+                TargetImageDto targetImageDto = new TargetImageDto
                 {
-                    TargetImageDto targetImageDto = new TargetImageDto();
-                    targetImageDto.Images = new List<Bitmap>();
-                    targetImageDto.Name = image.Name;
-                    targetImageDto.IsAd = image.IsAd;
-                    targetImageDto.Images.Add(bitmapImage);
+                    Name = image.Name,
+                    IsAd = image.IsAd,
+                    Image = bitmapImage
 
-                    targetImageDtos.Add(targetImageDto);
-                    counter++;
 
-                }
-                else
-                    targetImageDtos[counter - 1].Images.Add(bitmapImage);
+                };                   
+                targetImageDtos.Add(targetImageDto);
+
 
             }            
 

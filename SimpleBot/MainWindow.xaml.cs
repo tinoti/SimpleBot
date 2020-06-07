@@ -20,6 +20,8 @@ namespace SimpleBot
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    /// 
+
     public partial class MainWindow : Window
     {
 
@@ -33,19 +35,40 @@ namespace SimpleBot
             int waitTimeForAds = 40000;
 
             var databaseHelpers = new DatabaseHelper();
-            //databaseHelpers.WriteTargetImageToDatabase("C:\\Users\\Tino\\Desktop\\SimpleBot1\\DailyAds\\1.bmp", "American Dad", "DailyAds","1");
-            //databaseHelpers.WriteTargetImageToDatabase("C:\\Users\\Tino\\Desktop\\SimpleBot1\\DailyAds\\2.bmp", "American Dad", "DailyAds", "2");
-            //databaseHelpers.WriteTargetImageToDatabase("C:\\Users\\Tino\\Desktop\\SimpleBot1\\DailyAds\\3.0.bmp", "American Dad", "DailyAds", "3");
-            //databaseHelpers.WriteTargetImageToDatabase("C:\\Users\\Tino\\Desktop\\SimpleBot1\\DailyAds\\3.1.bmp", "American Dad", "DailyAds", "3");
-            //databaseHelpers.WriteTargetImageToDatabase("C:\\Users\\Tino\\Desktop\\SimpleBot1\\DailyAds\\4.bmp", "American Dad", "DailyAds", "4");
-            //databaseHelpers.WriteTargetImageToDatabase("C:\\Users\\Tino\\Desktop\\SimpleBot1\\DailyAds\\5.bmp", "American Dad", "DailyAds", "5", true);
-            //databaseHelpers.WriteTargetImageToDatabase("C:\\Users\\Tino\\Desktop\\SimpleBot1\\DailyAds\\6.bmp", "American Dad", "DailyAds", "6");
-            //databaseHelpers.WriteTargetImageToDatabase("C:\\Users\\Tino\\Desktop\\SimpleBot1\\DailyAds\\7.bmp", "American Dad", "DailyAds", "7");
+            //databaseHelpers.WriteTargetImageToDatabase("c:\\users\\tino\\desktop\\simplebot1\\dailyads\\HeadNode.bmp", "american dad", "dailyads", "HeadNode");
+            //databaseHelpers.WriteTargetImageToDatabase("c:\\users\\tino\\desktop\\simplebot1\\dailyads\\1.bmp", "american dad", "dailyads", "1");
+            //databaseHelpers.WriteTargetImageToDatabase("c:\\users\\tino\\desktop\\simplebot1\\dailyads\\2.bmp", "american dad", "dailyads", "2");
+            //databaseHelpers.WriteTargetImageToDatabase("c:\\users\\tino\\desktop\\simplebot1\\dailyads\\3.0.bmp", "american dad", "dailyads", "3.0");
+            //databaseHelpers.WriteTargetImageToDatabase("c:\\users\\tino\\desktop\\simplebot1\\dailyads\\3.1.bmp", "american dad", "dailyads", "3.1");
+            //databaseHelpers.WriteTargetImageToDatabase("c:\\users\\tino\\desktop\\simplebot1\\dailyads\\3.2.bmp", "american dad", "dailyads", "3.2");
+            //databaseHelpers.WriteTargetImageToDatabase("c:\\users\\tino\\desktop\\simplebot1\\dailyads\\4.bmp", "american dad", "dailyads", "4", true);
+            //databaseHelpers.WriteTargetImageToDatabase("c:\\users\\tino\\desktop\\simplebot1\\dailyads\\5.0.bmp", "american dad", "dailyads", "5.0");
+            //databaseHelpers.WriteTargetImageToDatabase("c:\\users\\tino\\desktop\\simplebot1\\dailyads\\5.1.bmp", "american dad", "dailyads", "5.1");
+            //databaseHelpers.WriteTargetImageToDatabase("c:\\users\\tino\\desktop\\simplebot1\\dailyads\\6.bmp", "american dad", "dailyads", "6");
+            //databaseHelpers.WriteTargetImageToDatabase("c:\\users\\tino\\desktop\\simplebot1\\dailyads\\7.bmp", "american dad", "dailyads", "7");
+
+
 
 
 
             List<TargetImageDto> images = databaseHelpers.GetTargetImagesFromDatabase(gameName, cycle);
-                       
+
+            TargetImageDto.SetNextNode(images, "HeadNode", "1");
+            TargetImageDto.SetNextNode(images, "1", "2");
+            TargetImageDto.SetNextNode(images, "2", "3.0");
+            TargetImageDto.SetNextNode(images, "2", "3.1");
+            TargetImageDto.SetNextNode(images, "2", "3.2");
+            TargetImageDto.SetNextNode(images, "3.0", "4");
+            TargetImageDto.SetNextNode(images, "3.1", "4");
+            TargetImageDto.SetNextNode(images, "3.2", "6");
+            TargetImageDto.SetNextNode(images, "4", "5.0");
+            TargetImageDto.SetNextNode(images, "4", "5.1");
+            TargetImageDto.SetNextNode(images, "5.0", "6");
+            TargetImageDto.SetNextNode(images, "5.1", "6");
+            TargetImageDto.SetNextNode(images, "6", "7");
+            TargetImageDto.SetNextNode(images, "7", "1");
+
+
             ImageSearch.Cycle(windowTitle, images, waitTimeBetweenClicks, waitTimeForAds);
 
 
